@@ -6,62 +6,47 @@ use App\Models\Brand;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBrandRequest;
 use App\Http\Requests\UpdateBrandRequest;
+use Illuminate\Http\Response;
+
 
 class BrandController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $brands = Brand::all();
+        return Response()->json(
+            $brands
+        );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreBrandRequest $request)
     {
-        //
+        $data = $request->validated();
+        $brand = Brand::create($data);
+        return Response()->json($brand);
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Brand $brand)
     {
-        //
+        return Response()->json($brand);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Brand $brand)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateBrandRequest $request, Brand $brand)
     {
-        //
+        $data = $request->validated();
+        $brand->update([
+            'name' => $data['name'],
+        ]);
+        return response()->json($brand, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(Brand $brand)
     {
-        //
+        $brand->delete();
+        return response()->json(['message' => 'Brand deleted successfully'], 200);
     }
 }

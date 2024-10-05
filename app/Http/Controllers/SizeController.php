@@ -6,62 +6,47 @@ use App\Models\Size;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSizeRequest;
 use App\Http\Requests\UpdateSizeRequest;
+use Illuminate\Http\JsonResponse;
+
 
 class SizeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(): JsonResponse
     {
-        //
+        $sizes = Size::all();
+        return response()->json($sizes);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+
+    public function store(StoreSizeRequest $request): JsonResponse
     {
-        //
+        $data = $request->validated();
+        $size = Size::create([
+            'name' => $data['name'],
+        ]);
+
+        return response()->json($size, 201);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreSizeRequest $request)
+
+    public function show(Size $size): JsonResponse
     {
-        //
+        return response()->json($size);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Size $size)
+
+    public function update(StoreSizeRequest $request, Size $size): JsonResponse
     {
-        //
+        $data = $request->validated();
+        $size->update(['name' => $data['name']]);
+        return response()->json($size, 200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Size $size)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateSizeRequest $request, Size $size)
+    public function destroy(Size $size): JsonResponse
     {
-        //
-    }
+        $size->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Size $size)
-    {
-        //
+        return response()->json(['message' => 'Size deleted successfully'], 200);
     }
 }

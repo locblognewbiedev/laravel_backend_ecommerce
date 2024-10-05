@@ -17,16 +17,14 @@ return new class extends Migration {
             $table->unsignedInteger('price_on_sale')->default(999999999);
             $table->string('image')->default('');
 
-            // Thêm khóa ngoại cho color_id và size_id
-            $table->unsignedBigInteger('color_id')->unsigned(); // Khóa ngoại cho color
-            $table->unsignedBigInteger('size_id')->unsigned(); // Khóa ngoại cho size
 
+            $table->unsignedBigInteger('color_id')->unsigned();
+            $table->unsignedBigInteger('size_id')->unsigned();
+            $table->unsignedTinyInteger('status')->default(1);
             $table->timestamps();
 
-            // Khóa ngoại cho color
-            $table->foreign('color_id')->references('id')->on('colors')->onDelete('cascade');
 
-            // Khóa ngoại cho size
+            $table->foreign('color_id')->references('id')->on('colors')->onDelete('cascade');
             $table->foreign('size_id')->references('id')->on('sizes')->onDelete('cascade');
         });
     }
